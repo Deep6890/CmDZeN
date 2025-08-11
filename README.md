@@ -3,4 +3,3 @@ CmDZeN represents a paradigm shift in developer productivity tools, combining in
 
 ## Documentation
 <embed src="readme.pdf" width="100%" height="600px" />
-![Uploading readme_page-0001.jpg…]()
