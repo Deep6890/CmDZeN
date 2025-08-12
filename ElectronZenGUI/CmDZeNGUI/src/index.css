@@ -5,4 +5,6 @@
 body,
 html {
     background-color: #0A0F1C;
+    color: white;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
