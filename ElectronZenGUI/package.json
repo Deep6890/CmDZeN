@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "electron": "^37.2.6"
+  },
+  "name": "electronzengui",
+  "version": "1.0.0",
+  "description": "This folder for gui , folder consist two techonology first is electron and second is react. Structure of the folder is there is electron js main file is outside of react folder i am rendering the index.html from react flolder",
+  "main": "mainelectron.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Deep Kayastha",
+  "license": "ISC"
+}
