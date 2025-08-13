@@ -38,10 +38,10 @@ function MainLoginPage() {
                         <h2 className="text-sm md:text-base mt-2 mb-8">Enter your account details</h2>
 
                         <input
-                            type="text"
+                            type="email"
                             className="w-full max-w-xs h-10 rounded-md text-sm border-0 border-b border-[#4f4755ff] 
                                        focus:border-b-purple-800 focus:outline-none bg-[#0d0017] px-4 mt-5"
-                            placeholder="Username"
+                            placeholder="Email"
                         />
                         <input
                             type="password"
