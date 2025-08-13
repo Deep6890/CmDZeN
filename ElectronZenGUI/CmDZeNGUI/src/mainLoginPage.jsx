@@ -72,7 +72,7 @@ function MainLoginPage() {
 
                     {/* Right: Light Rays + Welcome + SVG */}
                     <div
-                        className="flex w-full lg:w-7/12 h-8 lg:h-full relative overflow-hidden"
+                        className="hidden sm:flex w-full lg:w-7/12 h-8 lg:h-full relative overflow-hidden"
                     >
                         {/* Light Rays Background */}
                         <div className="absolute inset-0">
