@@ -6,7 +6,7 @@ import HamburgerIcon from '../LogoAndThings/hamBurger';
 
 export default function NavBar() {
     return (
-        <div className="w-screen h-20 flex justify-between items-center fixed px-4 bg-[#111827]">
+        <div className="w-screen h-20 flex justify-between items-center overflow-x-hidden px-4 bg-[#111827]">
 
             {/* Left - Logo */}
             <div className="flex items-center lg:w-1/4 w-auto">
