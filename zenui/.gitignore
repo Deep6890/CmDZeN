@@ -1,130 +1,127 @@
-    # Dependencies
-    ElectronFile/
+# Dependencies
+ElectronFile/node_modules/
+ElectronFile/*.exe
 
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# Production builds
+dist/
+build/
 
-    node_modules/
-    npm-debug.log*
-    yarn-debug.log*
-    yarn-error.log*
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-    # Production builds
-    dist/
-    build/
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
 
-    # Environment variables
-    .env
-    .env.local
-    .env.development.local
-    .env.test.local
-    .env.production.local
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-    # IDE files
-    .vscode/
-    .idea/
-    *.swp
-    *.swo
+# Logs
+logs
+*.log
 
-    # OS generated files
-    .DS_Store
-    .DS_Store?
-    ._*
-    .Spotlight-V100
-    .Trashes
-    ehthumbs.db
-    Thumbs.db
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-    # Logs
-    logs
-    *.log
+# Coverage directory used by tools like istanbul
+coverage/
 
-    # Runtime data
-    pids
-    *.pid
-    *.seed
-    *.pid.lock
+# Temporary folders
+tmp/
+temp/
 
-    # Coverage directory used by tools like istanbul
-    coverage/
+# Optional npm cache directory
+.npm
 
-    # Temporary folders
-    tmp/
-    temp/
+# Optional eslint cache
+.eslintcache
 
-    # Optional npm cache directory
-    .npm
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
 
-    # Optional eslint cache
-    .eslintcache
+# Optional REPL history
+.node_repl_history
 
-    # Microbundle cache
-    .rpt2_cache/
-    .rts2_cache_cjs/
-    .rts2_cache_es/
-    .rts2_cache_umd/
+# Output of 'npm pack'
+*.tgz
 
-    # Optional REPL history
-    .node_repl_history
+# Yarn Integrity file
+.yarn-integrity
 
-    # Output of 'npm pack'
-    *.tgz
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
 
-    # Yarn Integrity file
-    .yarn-integrity
+# next.js build output
+.next
 
-    # parcel-bundler cache (https://parceljs.org/)
-    .cache
-    .parcel-cache
+# nuxt.js build output
+.nuxt
 
-    # next.js build output
-    .next
+# vuepress build output
+.vuepress/dist
 
-    # nuxt.js build output
-    .nuxt
+# Serverless directories
+.serverless
 
-    # vuepress build output
-    .vuepress/dist
+# FuseBox cache
+.fusebox/
 
-    # Serverless directories
-    .serverless
+# DynamoDB Local files
+.dynamodb/
 
-    # FuseBox cache
-    .fusebox/
+# TernJS port file
+.tern-port
 
-    # DynamoDB Local files
-    .dynamodb/
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
 
-    # TernJS port file
-    .tern-port
+# Electron specific
+out/
+app/
+release/
+releases/
+dist-electron/
+*.dmg
+*.deb
+*.rpm
+*.AppImage
+*.snap
+*.msi
+*.pkg
+*.tar.gz
+*.zip
 
-    # Stores VSCode versions used for testing VSCode extensions
-    .vscode-test
+# Electron builder
+electron-builder.yml
+builder-debug.yml
+builder-effective-config.yaml
 
-    # Electron specific
-    out/
-    app/
-    release/
-    releases/
-    dist-electron/
-    *.dmg
-    *.exe
-    *.deb
-    *.rpm
-    *.AppImage
-    *.snap
-    *.msi
-    *.pkg
-    *.tar.gz
-    *.zip
-
-    # Electron builder
-    electron-builder.yml
-    builder-debug.yml
-    builder-effective-config.yaml
-
-    # Auto-generated files
-    src-electron/
-    main.js
-    preload.js
-    electron-main.js
-    electron-preload.js"ElectronFile/node_modules/" 
+# Auto-generated files
+src-electron/
+main.js
+preload.js
+electron-main.js
+electron-preload.js
