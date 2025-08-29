@@ -16,6 +16,10 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/activity', require('./routes/activityRoutes'));
 app.use('/api/challenges', require('./routes/challengeRoutes'));
+app.use('/api/questions', require('./routes/questionRoutes'));
+app.use('/api/answers', require('./routes/answerRoutes'));
+app.use('/api/blogs',require('./routes/blogRoutes'));
+
 
 
 module.exports = app;
