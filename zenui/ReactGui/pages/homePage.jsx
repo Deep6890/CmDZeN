@@ -86,8 +86,8 @@ export default function HomePage() {
     // Map actions to section IDs for smooth scrolling
     const sectionMap = {
       timer: 'dashboard',     // Focus timer section
-      blocker: 'dashboard',   // Website blocker section
-      progress: 'achievements', // Progress/achievements section
+      blocker: 'blocker-section',   // Website blocker section
+      progress: 'calendar-section', // Progress calendar section
       reflection: 'tips'      // Focus tips section
     };
 
@@ -183,7 +183,7 @@ export default function HomePage() {
         <HeroSection />
 
 
-        <section className="w-full py-20 bg-white"><WebsiteBlockerSystem /></section>
+        <section id="blocker-section" className="w-full py-20 bg-white"><WebsiteBlockerSystem /></section>
         {/* Block for recommendation coding platforms */}
         <SuggestionsSection />
         {/* Daily coding challenge */}
@@ -304,7 +304,7 @@ export default function HomePage() {
 
 
         {/* Activity Calendar Section - Visual progress tracking over time */}
-        <div className="flex justify-center mt-8 mb-8 items-center w-full">
+        <div id="calendar-section" className="flex justify-center mt-8 mb-8 items-center w-full">
           <div className="w-full max-w-7xl p-6">
             <ToolMainCard width="100%" height="100%" >
               <div className="w-full p-4">
