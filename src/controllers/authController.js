@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        console.log("JWT Secret in authController:", process.env.JWT_SECRET); // Debug
+        //console.log("JWT Secret in authController:", process.env.JWT_SECRET); // Debug
 
         const token = jwt.sign(
             { id: user._id, email: user.email },
@@ -57,3 +57,13 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+    // src/controllers/authController.js
+
+exports.logout = async (req, res) => {
+    try {
+        res.json({ message: "Logout successful. Please remove the token from client storage." });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
