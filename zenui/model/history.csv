@@ -1,6 +1,0 @@
-QuestionIndex,Title,AcceptanceLevel,Solved,TimeTaken,SolvedQuestion,UnderstoodSolution,Optimized,TestedEdgeCases,LearnedSomethingNew
-3680,Match DOM Content,97,True,14.93,y,y,n,y,y
-2702,Return Length of Arguments Passed,95,True,2.68,y,y,y,y,y
-3172,Bitwise OR of Adjacent Elements,95,False,2.21,n,n,n,n,n
-3262,Convert Doubly Linked List to Array I,95,False,2.03,n,n,n,n,n
-3680,Match DOM Content,97,True,14.98,y,y,y,y,y
