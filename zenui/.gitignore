@@ -1,6 +1,6 @@
 # Dependencies
 ElectronFile/node_modules/
-ElectronFile/*.exe
+.exe
 
 npm-debug.log*
 yarn-debug.log*
