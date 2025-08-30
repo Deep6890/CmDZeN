@@ -14,30 +14,31 @@ export default function WebsiteBlockerSystem() {
     const [activeTimers, setActiveTimers] = useState({});
 
     // Load data from memory on component mount
-    useEffect(() => {
-        // Initialize with some sample data for demonstration
-        const initialBlocked = [
-            {
-                id: 1,
-                url: 'facebook.com',
-                blockedAt: new Date(),
-                duration: 60,
-                remainingTime: 3540 // 59 minutes in seconds
-            }
-        ];
-        const initialHistory = [
-            {
-                id: 1,
-                action: 'BLOCKED',
-                website: 'facebook.com',
-                timestamp: new Date(Date.now() - 300000), // 5 minutes ago
-                duration: 60
-            }
-        ];
+    function localStore() {
+        const [userLocal, setUserLocal] = useState(() => {
+            const save = localStorage.getItem("id");
+            return save ? JSON.parse(save) : {
+                url: '',
+                blockedAt: new Date().toISOString(),
+                duration: 0,
+                remainingTime: 0
+            };
+        });
 
-        setBlockedWebsites(initialBlocked);
-        setBlockHistory(initialHistory);
-    }, []);
+        const handleChange = (e) => {
+            const { name, value } = e.target;
+            setUserLocal((prev) => ({
+                ...prev,
+                [name]: name === "duration" || name === "remainingTime" ? Number(value) : value
+            }));
+        };
+
+        useEffect(() => {
+            localStorage.setItem("id", JSON.stringify(userLocal));
+            setBlockedWebsites(initialBlocked);
+            setBlockHistory(initialHistory);
+        }, [userLocal]);
+    }
 
     // Timer effect for countdown
     useEffect(() => {
@@ -66,49 +67,114 @@ export default function WebsiteBlockerSystem() {
     };
 
     // Add websites to blocklist
-    const addWebsitesToBlocklist = () => {
+    const addWebsitesToBlocklist = async () => {
         if (!websiteInput.trim()) return;
 
         const websites = websiteInput.split(',').map(site => site.trim()).filter(site => site);
-        const newBlockedSites = [];
+        const cleanedWebsites = websites.map(website =>
+            website.replace(/^https?:\/\//, '').replace(/^www\./, '')
+        );
 
-        websites.forEach(website => {
-            // Clean URL format
-            const cleanUrl = website.replace(/^https?:\/\//, '').replace(/^www\./, '');
+        try {
+            console.log('Attempting to connect to backend...');
+            const response = await fetch('http://localhost:8000/block_websites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    websites: cleanedWebsites,
+                    duration: durationInput
+                })
+            });
 
-            // Check if already blocked
-            if (!blockedWebsites.find(site => site.url === cleanUrl)) {
-                const newSite = {
+            console.log('Response status:', response.status);
+            const result = await response.json();
+            console.log('Response data:', result);
+
+            if (result.success) {
+                const newBlockedSites = cleanedWebsites.map(url => ({
                     id: Date.now() + Math.random(),
-                    url: cleanUrl,
+                    url,
                     blockedAt: new Date(),
                     duration: durationInput,
-                    remainingTime: durationInput * 60 // Convert minutes to seconds
-                };
-                newBlockedSites.push(newSite);
-                addToHistory('BLOCKED', cleanUrl, durationInput);
-            }
-        });
+                    remainingTime: durationInput * 60
+                }));
 
-        setBlockedWebsites(prev => [...prev, ...newBlockedSites]);
-        setWebsiteInput('');
+                setBlockedWebsites(prev => [...prev, ...newBlockedSites]);
+                cleanedWebsites.forEach(url => addToHistory('BLOCKED', url, durationInput));
+                setWebsiteInput('');
+                alert('Websites blocked successfully!');
+            } else {
+                alert('Failed to block websites: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error blocking websites:', error);
+            alert('Error connecting to backend. Make sure Python server is running on port 8000.');
+        }
     };
 
     // Unblock specific website
-    const unblockWebsite = (siteId) => {
+    const unblockWebsite = async (siteId) => {
         const site = blockedWebsites.find(s => s.id === siteId);
-        if (site) {
-            setBlockedWebsites(prev => prev.filter(s => s.id !== siteId));
-            addToHistory('UNBLOCKED', site.url, 0);
+        if (!site) return;
+
+        try {
+            const response = await fetch('http://localhost:8000/unblock_websites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    websites: [site.url]
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setBlockedWebsites(prev => prev.filter(s => s.id !== siteId));
+                addToHistory('UNBLOCKED', site.url, 0);
+            } else {
+                alert('Failed to unblock website');
+            }
+        } catch (error) {
+            console.error('Error unblocking website:', error);
+            alert('Error connecting to backend');
         }
     };
 
     // Unblock all websites
-    const unblockAllWebsites = () => {
-        blockedWebsites.forEach(site => {
-            addToHistory('UNBLOCKED', site.url, 0);
-        });
-        setBlockedWebsites([]);
+    const unblockAllWebsites = async () => {
+        if (blockedWebsites.length === 0) return;
+
+        const websiteUrls = blockedWebsites.map(site => site.url);
+
+        try {
+            const response = await fetch('http://localhost:8000/unblock_websites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    websites: websiteUrls
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                blockedWebsites.forEach(site => {
+                    addToHistory('UNBLOCKED', site.url, 0);
+                });
+                setBlockedWebsites([]);
+            } else {
+                alert('Failed to unblock websites');
+            }
+        } catch (error) {
+            console.error('Error unblocking websites:', error);
+            alert('Error connecting to backend');
+        }
     };
 
     // Add action to history log

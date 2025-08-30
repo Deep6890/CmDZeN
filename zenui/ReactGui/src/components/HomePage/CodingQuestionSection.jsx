@@ -1,19 +1,42 @@
 // Coding questions with XP system
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiService from '../../services/api';
 import { config } from '../../config.js';
 import { XpIcon } from '../../icons/index.jsx';
 
 export default function CodingQuestionSection({ onXPUpdate }) {
-  const [currentQuestion, setCurrentQuestion] = useState({
-    id: 1,
-    question: "What is the time complexity of binary search?",
-    options: ["O(n)", "O(log n)", "O(n²)", "O(1)"],
-    correct: 1
-  });
+  const [currentQuestion, setCurrentQuestion] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [userXP, setUserXP] = useState(config.xp.defaultPoints);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch random question from Python API
+  const fetchQuestion = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8000/random_question');
+      const question = await response.json();
+      setCurrentQuestion(question);
+    } catch (error) {
+      console.error('Error fetching question:', error);
+      // Fallback question using LeetCode data structure
+      setCurrentQuestion({
+        id: 1,
+        question: "What is the difficulty of: Two Sum?",
+        options: ["EASY", "MEDIUM", "HARD", "EXPERT"],
+        correct: 0,
+        title: "Two Sum",
+        topics: "Array, Hash Table"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestion();
+  }, []);
 
   const handleSubmit = async () => {
     const isCorrect = selectedAnswer === currentQuestion.correct;
@@ -32,10 +55,11 @@ export default function CodingQuestionSection({ onXPUpdate }) {
       }
     }
 
-    // Reset after 3 seconds
+    // Reset and fetch new question after 3 seconds
     setTimeout(() => {
       setShowResult(false);
       setSelectedAnswer(null);
+      fetchQuestion();
     }, 3000);
   };
 
@@ -55,56 +79,72 @@ export default function CodingQuestionSection({ onXPUpdate }) {
 
         {/* Question Card */}
         <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg border border-gray-200">
-          <h3 className="text-xl md:text-2xl font-semibold mb-8 text-gray-900 text-center">
-            {currentQuestion.question}
-          </h3>
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+              <p className="mt-2 text-gray-600">Loading question...</p>
+            </div>
+          ) : currentQuestion ? (
+            <>
+              <div className="mb-8 text-center">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">
+                  {currentQuestion.question}
+                </h3>
+                <p className="text-sm text-gray-600">Topics: {currentQuestion.topics}</p>
+              </div>
 
-          {/* Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {currentQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedAnswer(index)}
-                disabled={showResult} // disable after submission
-                className={`p-4 rounded-xl border-2 text-left font-medium transition-all duration-300
-                  ${showResult
-                    ? index === currentQuestion.correct
-                      ? 'border-green-500 bg-green-50 shadow-md' // highlight correct
-                      : selectedAnswer === index
-                        ? 'border-red-500 bg-red-50 shadow-md' // wrong chosen
-                        : 'border-gray-200 bg-gray-50' // others stay neutral
-                    : selectedAnswer === index
-                      ? 'border-purple-500 bg-purple-50 shadow-md scale-[1.02]'
-                      : 'border-gray-200 hover:border-purple-300 hover:shadow-sm'
-                  }`}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
+              {/* Options */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                {currentQuestion.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedAnswer(index)}
+                    disabled={showResult} // disable after submission
+                    className={`p-4 rounded-xl border-2 text-left font-medium transition-all duration-300
+                      ${showResult
+                        ? index === currentQuestion.correct
+                          ? 'border-green-500 bg-green-50 shadow-md' // highlight correct
+                          : selectedAnswer === index
+                            ? 'border-red-500 bg-red-50 shadow-md' // wrong chosen
+                            : 'border-gray-200 bg-gray-50' // others stay neutral
+                        : selectedAnswer === index
+                          ? 'border-purple-500 bg-purple-50 shadow-md scale-[1.02]'
+                          : 'border-gray-200 hover:border-purple-300 hover:shadow-sm'
+                      }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
 
-          {/* Submit / Result */}
-          {!showResult ? (
-            <button
-              onClick={handleSubmit}
-              disabled={selectedAnswer === null}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold shadow-md hover:scale-[1.02] hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Submit Answer
-            </button>
-          ) : (
-            <div
-              className={`text-center py-4 px-6 rounded-xl font-semibold text-lg flex items-center justify-center gap-2
-                ${selectedAnswer === currentQuestion.correct
-                  ? 'bg-green-100 text-green-800 border border-green-300 animate-pulse'
-                  : 'bg-red-100 text-red-800 border border-red-300'
-                }`}
-            >
-              {selectedAnswer === currentQuestion.correct ? (
-                <>✅ Correct! +{config.xp.questionPoints} XP</>
+              {/* Submit / Result */}
+              {!showResult ? (
+                <button
+                  onClick={handleSubmit}
+                  disabled={selectedAnswer === null}
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold shadow-md hover:scale-[1.02] hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Submit Answer
+                </button>
               ) : (
-                <>❌ Incorrect. Try again tomorrow!</>
+                <div
+                  className={`text-center py-4 px-6 rounded-xl font-semibold text-lg flex items-center justify-center gap-2
+                    ${selectedAnswer === currentQuestion.correct
+                      ? 'bg-green-100 text-green-800 border border-green-300 animate-pulse'
+                      : 'bg-red-100 text-red-800 border border-red-300'
+                    }`}
+                >
+                  {selectedAnswer === currentQuestion.correct ? (
+                    <>✅ Correct! +{config.xp.questionPoints} XP</>
+                  ) : (
+                    <>❌ Incorrect. Try again tomorrow!</>
+                  )}
+                </div>
               )}
+            </>
+          ) : (
+            <div className="text-center py-8 text-gray-600">
+              Failed to load question. Please try again.
             </div>
           )}
         </div>

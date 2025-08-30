@@ -36,6 +36,7 @@ import WebsiteBlockerSystem from '../src/components/HomePage/customBlocker.jsx';
  * - Notes writing environment
  * - Website blocker system
  */
+
 export default function HomePage() {
   // Custom hooks for data fetching and state management
   const { data: homeData, loading } = useHomePageData(); // Fetches homepage data from API/localStorage

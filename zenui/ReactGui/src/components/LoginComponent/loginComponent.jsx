@@ -111,8 +111,7 @@ function LoginComponent({ switchToSignUp }) {
                 <div className="flex gap-4 items-center">
                     <button
                         onClick={() => handleSocialLogin('github')}
-                        disabled
-                        className="cursor-not-allowed p-3 bg-purple-100 border border-gray-300 rounded-2xl hover:bg-gray-200 hover:scale-105 transition-all duration-300 disabled:opacity-50 shadow-md hover:shadow-lg"
+                        className="p-3 bg-purple-100 border border-gray-300 rounded-2xl hover:bg-gray-200 hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                         <GithubLogo />
                     </button>
