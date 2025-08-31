@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global font override - Classic book fonts only */
+
+
+.navBarFonts {
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+}
+
+/* Remove all rounded borders globally
+* {
+  border-radius: 0 !important;
+} */
+
+/* Exception for profile page - keep rounded */
+/* .profile-page * {
+  border-radius: revert !important;
+} */
+
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, 'Neue Haas Grotesk', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Courier New', monospace;
+}
